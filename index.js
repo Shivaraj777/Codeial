@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 const port = 8000;
+//importing the mongoose module
+const db = require('./config/mongoose');
 //importing the express layouts module
 const expressLayouts = require('express-ejs-layouts');
 //extract style and scripts from the sub pages into the layout
