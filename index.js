@@ -6,14 +6,23 @@ const port = 8000;
 const db = require('./config/mongoose');
 //importing the express layouts module
 const expressLayouts = require('express-ejs-layouts');
+//importing teh cookie-parser module
+const cookieParser = require('cookie-parser'); //used for reading and writing into cookies
+
+//middleware to parse the form data
+app.use(express.urlencoded({extended: true})); //this is used to read the form data
+
+//middleware to use cookie-parser
+app.use(cookieParser());
+
+//use express Layouts
+app.use(expressLayouts); 
 //extract style and scripts from the sub pages into the layout
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
 //middleware to access the static files in assets folder
 app.use(express.static('./assets'));
-//use express Layouts
-app.use(expressLayouts);
 
 //use express router
 app.use('/', require('./routes'));  //this routes any requests that comes from the browser to the routes folder files
