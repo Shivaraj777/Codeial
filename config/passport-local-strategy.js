@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 
 //authentication using passport
-passport.use(new LocalStrategy({    //tell passport to use local startegy for authentication
+passport.use(new LocalStrategy({    //tell passport to use this local startegy for authentication(below code is the strategy for authentication)
         //defining the fields to be used for authentication
         usernameField: 'email',
     },
@@ -54,6 +54,26 @@ passport.deserializeUser(function(id, done){
             return done(err);
         });
 });
+
+//check if the user is authenticated(creaing a middleware)
+passport.checkAuthentication = function(req, res, next){
+    //if the user is signed in, then pass on the request to the next function(controller's action)
+    if(req.isAuthenticated()){
+        return next();
+    }
+    //if the user is not signed in
+    return res.redirect('/users/sign-in');
+}
+
+//sending the user details to the views(creating a middleware)
+passport.setAuthenticatedUser = function(req, res, next){
+    //if the user is signed in
+    if(req.isAuthenticated()){
+        //req.user contains the current signed in user details from the session cookie and we are just sending this to the locals(response) for the views
+        res.locals.user = req.user;
+    }
+    next();
+}
 
 //exporting the passport module
 module.exports = passport;
