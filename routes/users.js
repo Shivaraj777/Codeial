@@ -21,6 +21,8 @@ router.post('/create-session', passport.authenticate(
     'local',
     {failureRedirect: '/users/sign-in'},
 ), usersController.createSession);
+//routing the request to destroy-session action in users controller
+router.get('/sign-out', usersController.destroySession);
 
 //exporting the router so that it can be used in other files
 module.exports = router;

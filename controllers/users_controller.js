@@ -66,5 +66,16 @@ module.exports.create = function(req, res){
 
 //sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    return res.redirect('/users/profile');
+    return res.redirect('/');
+}
+
+//sign out and destroy the session
+module.exports.destroySession = function(req, res){
+    //passport has a method req.logout() which destroys the session
+    req.logout(err => {
+        if(err){
+            return next(err);
+        }
+        return res.redirect('/');
+    });
 }

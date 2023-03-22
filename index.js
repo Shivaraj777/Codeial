@@ -15,6 +15,8 @@ const session = require('express-session');  //used for creating sessions
 const passport = require('passport');
 //importing the passport-local-strategy module
 const passportLocal = require('./config/passport-local-strategy');
+//importing the connect-mongo module
+const MongoStore = require('connect-mongo'); //session is passed as an argument as it is used to store the session information in the database
 
 //middleware to parse the form data
 app.use(express.urlencoded({extended: true})); //this is used to read the form data
@@ -45,7 +47,16 @@ app.use(session({
     resave: false,   //if the session is not modified, do not save it
     cookie: {
         maxAge: (1000 * 60 * 100)  //max time in milliseconds after which the session cookie expires
-    }
+    },
+    store: new MongoStore(
+        {
+            mongoUrl: 'mongodb://127.0.0.1/codeial_development',  //connecting to the database
+            autoRemove: 'disabled'  //do not remove the session from the database even if it expires
+        },
+        function(err){
+            console.log(err || 'connect-mongodb setup ok');
+        }
+    )
 }));
 
 //use passport to initialize the session
