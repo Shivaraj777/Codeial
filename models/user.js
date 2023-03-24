@@ -1,4 +1,4 @@
-// Description: thsi file contains the schema for user collection
+// Description: this file contains the schema for user collection
 
 //require the mongoose module
 const mongoose = require('mongoose');
