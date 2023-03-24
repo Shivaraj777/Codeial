@@ -12,6 +12,7 @@ console.log('Router loaded');
 //routing the requests
 router.get('/', homeController.home);    //this route handles the home page requests and routes it to home controller
 router.use('/users', require('./users')); //if any request comes from /users page then this code will require the users.js file and route the request to users controller
+router.use('/posts', require('./posts')); //if any request comes from /posts page then this code will require the posts.js file and route the request to posts controller
 
 //for any further routes, access from here
 //router.use('/routerName', require('./routerFile'));
