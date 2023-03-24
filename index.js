@@ -17,6 +17,20 @@ const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 //importing the connect-mongo module
 const MongoStore = require('connect-mongo'); //session is passed as an argument as it is used to store the session information in the database
+//import the sass middleware
+const sass = require('node-sass');
+const sassMiddleware = require('node-sass-middleware');
+
+//middleware to convert scss to css
+
+//middleware to conver scss to css
+app.use(sassMiddleware({
+    src: './assets/scss',       //path where scss files are present
+    dest: './assets/css',       //path where css files are to be stored after conversion
+    debug: true,                //if true, it will print the logs in the console
+    outputStyle: 'extended',  //output style of the css file
+    prefix: '/css'            //prefix for the css files()
+}));
 
 //middleware to parse the form data
 app.use(express.urlencoded({extended: true})); //this is used to read the form data
