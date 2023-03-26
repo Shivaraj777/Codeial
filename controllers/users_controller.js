@@ -3,11 +3,20 @@
 //importing the User model
 const User = require('../models/user');
 
-//exporting the profile action
+//displays the profile page of the users(by checking the id in the url)
 module.exports.profile = function(req, res){
-    return res.render('user_profile', {
-        title: 'User Profile'
-    });
+    //find the user by id and render the profile page
+    User.findById(req.params.id)
+        .then(user => {
+            return res.render('user_profile', {
+                title: 'User Profile',
+                profile_user: user            //passing the user object to the view(user_profile.ejs)
+            });
+        })
+        .catch(err => {
+            console.log(`Error in finding the user: ${err}`);
+            return;
+        })
 }
 
 //exporting the sign-up action to render the sign-up page

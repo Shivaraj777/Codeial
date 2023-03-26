@@ -8,8 +8,8 @@ const usersController = require('../controllers/users_controller');
 //import the passport module
 const passport = require('passport');
 
-//routing the request
-router.get('/profile', passport.checkAuthentication, usersController.profile);
+//routing the request to profile action in users controller if user is authenticated
+router.get('/profile/:id', passport.checkAuthentication, usersController.profile);
 //routing the request to sign-up action in users controller
 router.get('/sign-up', usersController.signUp);
 //routing the request to sign-in action in users controller

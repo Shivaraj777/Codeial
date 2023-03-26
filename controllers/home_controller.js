@@ -2,6 +2,8 @@
 
 //import the Post model
 const Post = require('../models/post');
+//import the User model
+const User = require('../models/user');
 
 //exporting the home action
 module.exports.home = function(req, res){
@@ -29,12 +31,20 @@ module.exports.home = function(req, res){
             path: 'user'
         }
     })
-    .exec()   //populate('user') => populate the user of each post
+    .exec()   
         .then(posts => {
-            return res.render('home', {
-                title: "Codeial | Home",
-                posts: posts
-            });
+            User.find({})
+                .then(users => {
+                    return res.render('home', {
+                        title: "Codeial | Home",
+                        posts: posts,
+                        all_users: users
+                    });
+                })
+                .catch(err => {
+                    console.log(`Error in fetching users from DB: ${err}`);
+                    return;
+                });
         })
         .catch(err => {
             console.log(`Error in fetching posts from DB: ${err}`);

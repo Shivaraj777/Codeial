@@ -20,4 +20,12 @@
             </ul>
         </div>
     </section>
-
+<!-- Section to display the user's friends(or all the users) -->
+<section id="user-friends">
+    <h4>Friends</h4>
+    <% for(u of all_users){ %>
+        <p>
+            <a href="/users/profile/<%= u._id %>"> <%= u.name %></a>
+        </p>
+    <% } %>
+</section>
