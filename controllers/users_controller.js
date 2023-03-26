@@ -3,7 +3,7 @@
 //importing the User model
 const User = require('../models/user');
 
-//displays the profile page of the users(by checking the id in the url)
+//action to display the profile page of the users(by checking the id in the url)
 module.exports.profile = function(req, res){
     //find the user by id and render the profile page
     User.findById(req.params.id)
@@ -17,6 +17,24 @@ module.exports.profile = function(req, res){
             console.log(`Error in finding the user: ${err}`);
             return;
         })
+}
+
+//action to update the user profile
+module.exports.update = function(req, res){
+    //check if the user is authenticated(only the current user can update his/her profile)
+    if(req.user.id == req.params.id){
+        //if the user is authenticated, update the user
+        User.findByIdAndUpdate(req.params.id, req.body)
+            .then(user => {
+                return res.redirect('back');
+            })
+            .catch(err => {
+                console.log(`Error in updating the user: ${err}`);
+                return;
+            });
+    }else{     //if the user is not authenticated, redirect to the sign-in page
+        return res.status(401).send('Unauthorized');
+    }
 }
 
 //exporting the sign-up action to render the sign-up page
