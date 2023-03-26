@@ -35,3 +35,32 @@ module.exports.create = function(req, res){
             return;
         });
 }
+
+//delete a comment
+module.exports.destroy = function(req, res){
+    console.log(req.params.id);
+    //find the comment
+    Comment.findById(req.params.id)
+        .then(comment => {
+            //if the comment belongs to the user or the post belongs to the user(user can delete the comment)
+            if(comment.user == req.user.id){
+                const postId = comment.post;   //store the postId so that we can delete the comment from the comments array of post schema
+                comment.deleteOne();    //delete the comment
+                //find the post in which comment is to be deleted
+                Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}})   //$pull is used to pull/remove the comment from the comments array of post schema
+                    .then(post => {
+                        return res.redirect('back');
+                    })
+                    .catch(err => {
+                        console.log('Error in deleting the comment from the comments array of post schema', err);
+                        return;
+                    });
+            }else{
+                return res.redirect('back');
+            }
+        })
+        .catch(err => {
+            console.log('Error in finding the comment to be deleted', err);
+            return;
+        });
+}

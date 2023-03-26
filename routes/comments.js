@@ -11,6 +11,8 @@ const passport = require('passport');
 
 //routing the requests to the create action in comments_controller
 router.post('/create', passport.checkAuthentication, commentsController.create);
+//routing the requests to the destroy action in comments_controller
+router.get('/destroy/:id', passport.checkAuthentication, commentsController.destroy);  //:id is a dynamic parameter
 
 //exporting the router
 module.exports = router;
