@@ -2,18 +2,24 @@
 <h1> <%= title %> </h1>
 
 <!-- If user is signed in show the posts-->
-<% if(locals.user){ %>
     <section id="feed-post">
         <h4>Posts</h4>
-        <form action="/posts/create" id="new-post-form" method="POST">
-            <textarea name="content" id="content" cols="30" rows="3" placeholder="Add your thoughts here" required></textarea>
-            <input type="submit" value="Post">
-        </form>
+        <% if(locals.user) { %>
+            <form action="/posts/create" id="new-post-form" method="POST">
+                <textarea name="content" id="content" cols="30" rows="3" placeholder="Add your thoughts here" required></textarea>
+                <input type="submit" value="Post">
+            </form>
+        <% } %>
         <div id="posts-list-container">
             <ul>
                 <% for(let post of posts){ %>
                     <li>
                         <p>
+                            <% if(locals.user && (locals.user.id == post.user.id)){ %>
+                                <small>
+                                    <a href="/posts/destroy/<%= post.id %>">X</a>
+                                </small>
+                            <% } %>
                             <%= post.content %>
                             <br>
                             <small>
@@ -21,11 +27,13 @@
                             </small>
                         </p>
                         <div class="post-comments">
-                            <form action="/comments/create" id="new-comment-form" method="POST">
-                                <input type="text" name="content" id="content" placeholder="Add your comments" required>
-                                <input type="hidden" name="post" value="<%= post._id %>"> <!-- Hidden input to send the post id -->
-                                <input type="submit" value="Add Comment">
-                            </form>
+                            <% if(locals.user) { %>
+                                <form action="/comments/create" id="new-comment-form" method="POST">
+                                    <input type="text" name="content" id="content" placeholder="Add your comments" required>
+                                    <input type="hidden" name="post" value="<%= post._id %>"> <!-- Hidden input to send the post id -->
+                                    <input type="submit" value="Add Comment">
+                                </form>
+                            <% } %>
                             <div class="post-comments-list">
                                 <ul id="post-comments-<%= post._id %>">
                                     <% for(let comment of post.comments){ %>
@@ -47,5 +55,4 @@
             </ul>
         </div>
     </section>
-<% } %>
 

@@ -23,7 +23,7 @@ module.exports.home = function(req, res){
     //find all the post and populate the user of each post
     Post.find({})
     .populate('user')           //populate('user') => populate the user of each post
-    .populate({                 //populate the comments of each post and populate the user of each comment
+    .populate({                 //populate the comments of each post and populate the user of each comment(This methos id called nested/deep population)
         path: 'comments',       
         populate: {             
             path: 'user'

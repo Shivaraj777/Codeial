@@ -44,7 +44,7 @@ passport.deserializeUser(function(id, done){
         .then(user => {
             //if user found
             if(user){
-                return done(null, user);
+                return done(null, user); 
             }
             //if user not found
             return done(null, false);

@@ -11,6 +11,8 @@ const passport = require('passport');
 
 //routing the requests to the create action in posts_controller
 router.post('/create', passport.checkAuthentication, postsController.create);
+//routing the requests to the destroy action in posts_controller
+router.get('/destroy/:id', passport.checkAuthentication, postsController.destroy);  //:id is a dynamic parameter
 
 //exporting the router
 module.exports = router;
