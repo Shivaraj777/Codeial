@@ -13,49 +13,9 @@
         <div id="posts-list-container">
             <ul>
                 <% for(let post of posts){ %>
-                    <li>
-                        <p>
-                            <% if(locals.user && (locals.user.id == post.user.id)){ %>
-                                <small>
-                                    <a href="/posts/destroy/<%= post.id %>">X</a>
-                                </small>
-                            <% } %>
-                            <%= post.content %>
-                            <br>
-                            <small>
-                                <%= post.user.name %>
-                            </small>
-                        </p>
-                        <div class="post-comments">
-                            <% if(locals.user) { %>
-                                <form action="/comments/create" id="new-comment-form" method="POST">
-                                    <input type="text" name="content" id="content" placeholder="Add your comments" required>
-                                    <input type="hidden" name="post" value="<%= post._id %>"> <!-- Hidden input to send the post id -->
-                                    <input type="submit" value="Add Comment">
-                                </form>
-                            <% } %>
-                            <div class="post-comments-list">
-                                <ul id="post-comments-<%= post._id %>">
-                                    <% for(let comment of post.comments){ %>
-                                        <li>
-                                            <p>
-                                                <% if(locals.user && (locals.user.id == comment.user.id)){ %> <!-- If user is signed in and the user is the owner of the comment -->
-                                                    <small>
-                                                        <a href="/comments/destroy/<%= comment.id %>">X</a>
-                                                    </small>
-                                                <% } %>
-                                                <%= comment.content %>
-                                                <br>
-                                                <small>
-                                                    <%= comment.user.name %>
-                                                </small>
-                                            </p>
-                                        </li>
-                                    <% } %>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
+                    
+                    <%- include('_post', {post: post}); -%>  <!-- Include the post partial and also passing post object as parameter to the partial -->  
+
                 <% } %>
             </ul>
         </div>

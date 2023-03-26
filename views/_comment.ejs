@@ -1,0 +1,15 @@
+<!-- Partial for displaying the comments on home screen -->
+<li>
+    <p>
+        <% if(locals.user && (locals.user.id == comment.user.id)){ %> <!-- If user is signed in and the user is the owner of the comment -->
+            <small>
+                <a href="/comments/destroy/<%= comment.id %>">X</a>
+            </small>
+        <% } %>
+        <%= comment.content %>
+        <br>
+        <small>
+            <%= comment.user.name %>
+        </small>
+    </p>
+</li>
