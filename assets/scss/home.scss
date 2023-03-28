@@ -1,0 +1,18 @@
+// Description: Home Page CSS
+
+#home-container{
+    display: flex;
+    flex-direction: row;
+
+    #feed-post{
+        width: 70%;
+        padding: 0.5rem;
+    }
+
+    #user-friends{
+        width: 30%;
+        padding: 0.5rem;
+        height: 100%;
+        border-left: 1px solid #e6e6e6;
+    }
+}

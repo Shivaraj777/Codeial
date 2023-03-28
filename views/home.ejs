@@ -1,7 +1,8 @@
+<link rel="stylesheet" href="/css/home.css">
 <!-- Home page content -->
 <h1> <%= title %> </h1>
-
-<!-- If user is signed in show the posts-->
+<div id="home-container">
+    <!-- If user is signed in show the posts-->
     <section id="feed-post">
         <h4>Posts</h4>
         <% if(locals.user) { %>
@@ -20,12 +21,13 @@
             </ul>
         </div>
     </section>
-<!-- Section to display the user's friends(or all the users) -->
-<section id="user-friends">
-    <h4>Friends</h4>
-    <% for(u of all_users){ %>
-        <p>
-            <a href="/users/profile/<%= u._id %>"> <%= u.name %></a>
-        </p>
-    <% } %>
-</section>
+    <!-- Section to display the user's friends(or all the users) -->
+    <section id="user-friends">
+        <h4>Friends</h4>
+        <% for(u of all_users){ %>
+            <p>
+                <a href="/users/profile/<%= u._id %>"> <%= u.name %></a>
+            </p>
+        <% } %>
+    </section>
+</div>
