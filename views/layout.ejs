@@ -30,14 +30,16 @@
     <% if(flash.success && flash.success.length != 0){ %>
         <script>
             new Noty({
-                theme: 'relax',
-                text: '<%= flash.success %>',
-                type: 'success',
-                layout: 'topRight',
-                timeout: 1500   
+                theme: 'relax',                // theme of the notification
+                text: '<%= flash.success %>',  // text to be displayed
+                type: 'success',   
+                layout: 'topRight',             // position of the notification
+                timeout: 1500                  // time for which the notification will be displayed
             }).show()
         </script>
-    <% }else{ %>
+    <% } %>
+    
+    <% if(flash.error && flash.error.length != 0){ %>
         <script>
             new Noty({
                 theme: 'relax',
