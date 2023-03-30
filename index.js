@@ -20,8 +20,10 @@ const MongoStore = require('connect-mongo'); //session is passed as an argument 
 //import the sass middleware
 const sass = require('node-sass');
 const sassMiddleware = require('node-sass-middleware');
-
-//middleware to convert scss to css
+//import the flash module
+const flash = require('connect-flash'); //used for displaying the flash messages
+//import the custom middleware
+const customMware = require('./config/middleware');
 
 //middleware to conver scss to css
 app.use(sassMiddleware({
@@ -80,6 +82,10 @@ app.use(passport.session());
 
 //use passport setAuthenticatedUser middleware to set the user for the views
 app.use(passport.setAuthenticatedUser);
+
+//use flash to display the flash messages
+app.use(flash());  //this should be used after the session cookie is set
+app.use(customMware.setFlash);  //this is used to set the flash messages in the response locals
 
 //use express router
 app.use('/', require('./routes'));  //this routes any requests that comes from the browser to the routes folder files

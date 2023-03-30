@@ -14,6 +14,13 @@
 <body>
     <%- include('_header'); -%>
 
+    <!-- ejs code to display the flash messages in browser screen -->
+    <% if(flash.success && flash.success.length != 0){ %>
+        <div class="alert alert-success">
+            <h5> <%= flash.success %> </h5>
+        </div>
+    <% } %>
+
     <main id="layout-main">
         <%- body %>          <!-- This is where the dynamic content will be injected -->
     </main>
