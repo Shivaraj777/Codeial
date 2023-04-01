@@ -26,10 +26,12 @@ module.exports.update = function(req, res){
         //if the user is authenticated, update the user
         User.findByIdAndUpdate(req.params.id, req.body)
             .then(user => {
+                req.flash('success', 'Profile updated!');  //flash message
                 return res.redirect('back');
             })
             .catch(err => {
                 console.log(`Error in updating the user: ${err}`);
+                req.flash('error', err);    //flash message
                 return;
             });
     }else{     //if the user is not authenticated, redirect to the sign-in page
@@ -63,8 +65,9 @@ module.exports.signIn = function(req, res){
 
 //get the sign-up data
 module.exports.create = function(req, res){
-    //chec if the password and confirm password match
+    //check if the password and confirm password match
     if(req.body.password != req.body.confirm_password){
+        req.flash('error', 'Passwords do not match');  //flash message
         return res.redirect('back');
     }
     //check if the user already exists
@@ -74,26 +77,30 @@ module.exports.create = function(req, res){
                 //if the user does not exist, create the user
                 User.create(req.body)
                     .then(user => {
+                        req.flash('success', 'Signed up successfully');  //flash message
                         return res.redirect('/users/sign-in');
                     })
                     .catch(err => {
                         console.log(`Error in creating user while signing up: ${err}`);
+                        req.flash('error', err);    //flash message
                         return;
                     });
             }else{
                 //if user already exists, redirect to sign-in page
+                req.flash('error', 'User already exists, please login to continue!');  //flash message
                 return res.redirect('back');
             }
         })
         .catch(err => {
             console.log(`Error in finding the user while signing up: ${err}`);
+            req.flash('error', err);    //flash message
             return;
         });
 }
 
 //sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    req.flash('success', 'Logged in successfully');
+    req.flash('success', 'Logged in successfully');   //flash message
     return res.redirect('/');
 }
 
@@ -104,7 +111,7 @@ module.exports.destroySession = function(req, res){
         if(err){
             return next(err);
         }
-        req.flash('success', 'You have logged out!');
+        req.flash('success', 'You have logged out!');  //flash message
         return res.redirect('/');
     });
 }

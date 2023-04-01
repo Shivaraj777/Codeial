@@ -55,11 +55,14 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
+            req.flash('success', 'Comment added!');  //flash message
+
             //redirect to the same page
             res.redirect('/');
         }
     }catch(err){
         console.log('Error', err);
+        req.flash('error', err);
         return;
     } 
 }
@@ -107,13 +110,17 @@ module.exports.destroy = async function(req, res){
             //find the post in which comment is to be deleted and pull the comment Id from the comments array of post schema
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
 
+            req.flash('success', 'Comment deleted!');  //flash message
+
             //redirect to the same page
             return res.redirect('back');
         }else{
+            req.flash('error', 'You cannot delete this comment!');  //flash message
             return res.redirect('back');
         }
     }catch(err){
         console.log('Error', err);
+        req.flash('error', err);
         return;
     }  
 }
