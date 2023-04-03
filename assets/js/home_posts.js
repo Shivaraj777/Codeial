@@ -19,6 +19,16 @@
                     let newPost = newPostDom(data.data.post);    //calling the method to create a post in DOM
                     $('#posts-list-container>ul').prepend(newPost);   //inserting the post at the beginning of the list in the DOM  
                     deletePost($(' .delete-post-button', newPost));     //calling the method to delete a post from DOM   
+
+                    //adding noty notification for sucessful post creation using ajax
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post published!",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                 },
                 error: function(error){        //if there is an error, the error is logged in the console
                     console.log(error.responseText);
@@ -66,6 +76,15 @@
                 url: $(deleteLink).prop('href'),    //getting the value of href attribute of the delete link
                 success: function(data){
                     $(`#post-${data.data.post_id}`).remove();      //removing the post from the DOM
+                    //adding noty notification for sucessful post deletion using ajax
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post Deleted",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                 },
                 error: function(error){
                     console.log(error.responseText);
