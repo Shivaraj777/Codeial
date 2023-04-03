@@ -55,6 +55,23 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
+            //if the request is an AJAX request
+            if (req.xhr){
+                // populate the user of each comment
+                comment = await comment.populate({
+                    path: 'user',
+                    select: 'name'
+                });
+
+                //return the comment in json format
+                return res.status(200).json({
+                    data: {
+                        comment: comment
+                    },
+                    message: "Comment added!"
+                });
+            }
+
             req.flash('success', 'Comment added!');  //flash message
 
             //redirect to the same page
@@ -109,6 +126,16 @@ module.exports.destroy = async function(req, res){
 
             //find the post in which comment is to be deleted and pull the comment Id from the comments array of post schema
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+
+            //if the request is an AJAX request
+            if(req.xhr){
+                return res.status(200).json({
+                    data: {
+                        comment_id: req.params.id
+                    },
+                    message: "Comment deleted!"
+                });
+            }
 
             req.flash('success', 'Comment deleted!');  //flash message
 

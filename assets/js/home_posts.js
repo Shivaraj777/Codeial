@@ -20,6 +20,9 @@
                     $('#posts-list-container>ul').prepend(newPost);   //inserting the post at the beginning of the list in the DOM  
                     deletePost($(' .delete-post-button', newPost));     //calling the method to delete a post from DOM   
 
+                    // call the create comment class
+                    new PostComments(data.data.post._id);
+
                     //adding noty notification for sucessful post creation using ajax
                     new Noty({
                         theme: 'relax',
@@ -51,13 +54,13 @@
                 </small>
             </p>
             <div class="post-comments">
-                <form action="/comments/create" id="new-comment-form" method="POST">
+                <form action="/comments/create" id="post-${ post._id }-comments-form" method="POST">
                     <input type="text" name="content" id="content" placeholder="Add your comments" required>
                     <input type="hidden" name="post" value="${post._id}"> <!-- Hidden input to send the post id -->
                     <input type="submit" value="Add Comment">
                 </form>
                 <div class="post-comments-list">
-                    <ul id="post-comments-<${post._id}">
+                    <ul id="post-comments-${post._id}">
                        
                     </ul>
                 </div>
@@ -93,5 +96,19 @@
         })
     }
 
+    // loop over all the existing posts on the page (when the window loads for the first time) and call the delete post method on delete link of each, also add AJAX (using the class we've created) to the delete button of each
+    let convertPostsToAjax = function(){
+        $('#posts-list-container>ul>li').each(function(){
+            let self = $(this);
+            let deleteButton = $(' .delete-post-button', self);
+            deletePost(deleteButton);
+
+            // get the post's id by splitting the id attribute
+            let postId = self.prop('id').split("-")[1];
+            new PostComments(postId);
+        });
+    }
+
     createPost();
+    convertPostsToAjax();
 }
