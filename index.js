@@ -48,6 +48,8 @@ app.set('layout extractScripts', true);
 
 //middleware to access the static files in assets folder
 app.use(express.static('./assets'));
+//make the uploads path available to the browser
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 //set up the view engine to ejs
 app.set('view engine', 'ejs');
