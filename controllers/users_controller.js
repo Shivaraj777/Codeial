@@ -20,21 +20,58 @@ module.exports.profile = function(req, res){
 }
 
 //action to update the user profile
-module.exports.update = function(req, res){
+// module.exports.update = function(req, res){
+//     //check if the user is authenticated(only the current user can update his/her profile)
+//     if(req.user.id == req.params.id){
+//         //if the user is authenticated, update the user
+//         User.findByIdAndUpdate(req.params.id, req.body)
+//             .then(user => {
+//                 req.flash('success', 'Profile updated!');  //flash message
+//                 return res.redirect('back');
+//             })
+//             .catch(err => {
+//                 console.log(`Error in updating the user: ${err}`);
+//                 req.flash('error', err);    //flash message
+//                 return;
+//             });
+//     }else{     //if the user is not authenticated, redirect to the sign-in page
+//         return res.status(401).send('Unauthorized');
+//     }
+// }
+
+//action to update the user profile using async-await and multer
+module.exports.update = async function(req, res){
     //check if the user is authenticated(only the current user can update his/her profile)
     if(req.user.id == req.params.id){
-        //if the user is authenticated, update the user
-        User.findByIdAndUpdate(req.params.id, req.body)
-            .then(user => {
-                req.flash('success', 'Profile updated!');  //flash message
+        try{
+            //find the user by id
+            let user = await User.findById(req.params.id);
+
+            //multer function to upload the file and update the user
+            User.uploadedAvatar(req, res, function(err){
+                if(err){
+                    console.log(`******Multer error: ${err}`);
+                }
+                // console.log(req.file);
+                //update the user with the new data
+                user.name = req.body.name;
+                user.email = req.body.email;
+                
+                //if the user has uploaded a file
+                if(req.file){
+                    //this is saving the path of the uploaded file into the avatar field in the user
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+                
+                user.save();
                 return res.redirect('back');
-            })
-            .catch(err => {
-                console.log(`Error in updating the user: ${err}`);
-                req.flash('error', err);    //flash message
-                return;
             });
-    }else{     //if the user is not authenticated, redirect to the sign-in page
+        }catch{
+            console.log(`Error in updating the user: ${err}`);
+            req.flash('error', err);
+            return;
+        }
+    }else{  //if the user is not authenticated, redirect to the sign-in page
         return res.status(401).send('Unauthorized');
     }
 }
