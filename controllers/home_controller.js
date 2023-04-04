@@ -44,7 +44,7 @@ const User = require('../models/user');
 module.exports.home = async function(req, res){
     //try-catch block is used to handle the errors
     try{
-         // populate the user of each post
+        // populate the user of each post
         let posts = await Post.find({})
         .sort('-createdAt')         //sort the posts in descending order of createdAt
         .populate('user')
