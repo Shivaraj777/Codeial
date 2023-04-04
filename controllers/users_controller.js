@@ -2,6 +2,10 @@
 
 //importing the User model
 const User = require('../models/user');
+//importing the fs module
+const fs = require('fs');
+//importing the path module
+const path = require('path');
 
 //action to display the profile page of the users(by checking the id in the url)
 module.exports.profile = function(req, res){
@@ -56,13 +60,21 @@ module.exports.update = async function(req, res){
                 //update the user with the new data
                 user.name = req.body.name;
                 user.email = req.body.email;
-                
+
+                //check if path of avatar is already present in the user
+                if(user.avatar){
+                    //if the user has already uploaded a file, delete the previous file(existsSync() checks if the file exists or not
+                    if(fs.existsSync(path.join(__dirname, '..', user.avatar))){
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));     //unlinkSync() is used to delete the file
+                    }
+                }
+
                 //if the user has uploaded a file
                 if(req.file){
                     //this is saving the path of the uploaded file into the avatar field in the user
                     user.avatar = User.avatarPath + '/' + req.file.filename;
                 }
-                
+
                 user.save();
                 return res.redirect('back');
             });
