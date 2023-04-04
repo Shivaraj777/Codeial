@@ -15,6 +15,9 @@ router.use('/users', require('./users')); //if any request comes from /users pag
 router.use('/posts', require('./posts')); //if any request comes from /posts page then this code will require the posts.js file and route the request to posts controller
 router.use('/comments', require('./comments'));    //if any request comes from /comments page then this code will require the comments.js file and route the request to comments controller
 
+//redirecting the request with /api to api/index.js file
+router.use('/api', require('./api'));
+
 //for any further routes, access from here
 //router.use('/routerName', require('./routerFile'));
 
