@@ -15,6 +15,8 @@ const session = require('express-session');  //used for creating sessions
 const passport = require('passport');
 //importing the passport-local-strategy module
 const passportLocal = require('./config/passport-local-strategy');
+//importing the passport-jwt-strategy module
+const passportJWT = require('./config/passport-jwt-strategy');
 //importing the connect-mongo module
 const MongoStore = require('connect-mongo'); //session is passed as an argument as it is used to store the session information in the database
 //import the sass middleware

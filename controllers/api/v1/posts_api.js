@@ -27,7 +27,7 @@ module.exports.destroy = async function(req, res){
         let post = await Post.findById(req.params.id);
 
         //if the post belongs to the user(only the user who created the post can delete it)
-        // if (post.user == req.user.id){
+        if (post.user == req.user.id){
             post.deleteOne();  //delete the post
 
             //delete all the comments associated with the post
@@ -36,10 +36,11 @@ module.exports.destroy = async function(req, res){
             return res.status(200).json({
                 message: 'Post and associated comments deleted successfully!'
             });
-        // }else{
-        //     req.flash('error', 'You cannot delete this post!');
-        //     return res.redirect('back');
-        // }
+        }else{
+            return res.status(401).json({
+                message: 'You cannot delete this post'
+            });
+        }
     }catch(err){
         console.log(`Error in deleting post: ${err}`);
         return res.status(500).json({

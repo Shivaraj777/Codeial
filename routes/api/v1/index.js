@@ -6,5 +6,7 @@ const router = express.Router();
 
 //routing the requests to the posts.js file
 router.use('/posts', require('./posts'));
+//routing the requests to the pusers.js file
+router.use('/users', require('./users'));
 
 module.exports = router;
