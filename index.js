@@ -17,6 +17,8 @@ const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 //importing the passport-jwt-strategy module
 const passportJWT = require('./config/passport-jwt-strategy');
+//importing the passport-google-oauth2-strategy module
+const passportGoogle = require('./config/passport-google-oauth2-strategy');
 //importing the connect-mongo module
 const MongoStore = require('connect-mongo'); //session is passed as an argument as it is used to store the session information in the database
 //import the sass middleware

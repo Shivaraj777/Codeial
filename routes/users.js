@@ -26,5 +26,10 @@ router.post('/create-session', passport.authenticate(
 //routing the request to destroy-session action in users controller
 router.get('/sign-out', usersController.destroySession);
 
+//router for google authentication to get the user profile and email
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+//router for google callback url to create the session for user
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession);
+
 //exporting the router so that it can be used in other files
 module.exports = router;
