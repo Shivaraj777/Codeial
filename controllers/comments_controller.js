@@ -4,8 +4,12 @@
 const Comment = require('../models/comment');
 //require the post model
 const Post = require('../models/post');
-//reuire the comments_mailer module
+//require the comments_mailer module
 const commentsMailer = require('../mailers/comments_mailer');
+//require the queue module
+const queue = require('../config/kue');  //create a queue
+//require the commentEmailWorker module
+const commentsEmailWorker = require('../workers/comment_email_worker'); 
 
 //create a new comment
 // module.exports.create = function(req, res){
@@ -64,7 +68,17 @@ module.exports.create = async function(req, res){
             });
 
             //send the email to the user who made the comment
-            commentsMailer.newComment(comment);
+            // commentsMailer.newComment(comment);
+
+            //create a new job in the queue for sending mails('emails' is the name of the queue, comment is the data that we want to pass to the worker)
+            //if queue does not exists, new queue is created and job is added || if queue exists, the job is added to the queue
+            let job = queue.create('emails', comment).save(function(err){   //save the job in the queue
+                if(err){
+                    console.log('Error in creating a queue', err);
+                    return;
+                }
+                console.log('Job enqueued', job.id);  //how can job.id be accessed here? job is defined inside the save function
+            });
 
             //if the request is an AJAX request
             if (req.xhr){
