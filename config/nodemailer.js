@@ -4,6 +4,8 @@
 const nodemailer = require('nodemailer');
 //importing the ejs module
 const ejs = require('ejs');
+//importing the path module
+const path = require('path');
 
 
 //defining the transporter for sending emails(defines how the communication will take place)
@@ -26,7 +28,7 @@ let renderTemplate = (data, relativePath) => {
         data,                                                     //data to be passed to the html template
         function(err, template){
             if(err){
-                console.log('Error in rendering template');
+                console.log('Error in rendering template', err);
                 return;
             }
             //if no error then store the html template in the mailHTML variable
