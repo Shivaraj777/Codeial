@@ -4,6 +4,8 @@
 const Comment = require('../models/comment');
 //require the post model
 const Post = require('../models/post');
+//reuire the comments_mailer module
+const commentsMailer = require('../mailers/comments_mailer');
 
 //create a new comment
 // module.exports.create = function(req, res){
@@ -55,14 +57,17 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
+            // populate the user of each comment
+            comment = await comment.populate({
+                path: 'user',
+                select: 'name email'
+            });
+
+            //send the email to the user who made the comment
+            commentsMailer.newComment(comment);
+
             //if the request is an AJAX request
             if (req.xhr){
-                // populate the user of each comment
-                comment = await comment.populate({
-                    path: 'user',
-                    select: 'name'
-                });
-
                 //return the comment in json format
                 return res.status(200).json({
                     data: {

@@ -9,12 +9,12 @@ const ejs = require('ejs');
 //defining the transporter for sending emails(defines how the communication will take place)
 let transporter = nodemailer.createTransport({
     service: 'gmail',                //service to be used for sending emails
-    host: 'smtp.gmail.com',         
+    host: 'smtp.gmail.com',         //domain used by developers to interact with service    
     port: 587,
-    secure: false,  
+    secure: true,  
     auth: {         
         user: 'codeslayer09876@gmail.com',
-        pass: 'Test@123'
+        pass: 'fxptgdmefqyvnkwo'
     }
 });
 
