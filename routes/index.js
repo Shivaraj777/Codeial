@@ -14,6 +14,7 @@ router.get('/', homeController.home);    //this route handles the home page requ
 router.use('/users', require('./users')); //if any request comes from /users page then this code will require the users.js file and route the request to users controller
 router.use('/posts', require('./posts')); //if any request comes from /posts page then this code will require the posts.js file and route the request to posts controller
 router.use('/comments', require('./comments'));    //if any request comes from /comments page then this code will require the comments.js file and route the request to comments controller
+router.use('/likes', require('./likes'));  //if any request comes from /likes page then this code will require the likes.js file and route the request to likes controller
 
 //redirecting the request with /api to api/index.js file
 router.use('/api', require('./api'));
