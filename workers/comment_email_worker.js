@@ -14,4 +14,4 @@ queue.process('emails', function(job, done){
 
     //tell the queue that the job is done
     done();
-})
+});

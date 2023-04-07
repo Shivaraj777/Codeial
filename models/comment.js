@@ -16,7 +16,13 @@ const commentSchema = new mongoose.Schema({
     post:{      //this is the reference to the post on which the comment is made
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
-    }
+    },
+    likes: [    //include the array of ids of all the likes in this post schema itself(to make it easier to access the likes of a post)
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like'
+        }
+    ]
 }, {
     timestamps: true
 });
