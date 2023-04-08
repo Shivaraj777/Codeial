@@ -2,7 +2,11 @@
 
 //require the Post model
 const Post = require('../models/post');
+//require the Comment model
 const Comment = require('../models/comment');
+//require the Like model
+const Like = require('../models/like');
+
 
 //action to create a post
 // module.exports.create = function(req, res){
@@ -102,6 +106,10 @@ module.exports.destroy = async function(req, res){
 
         //if the post belongs to the user(only the user who created the post can delete it)
         if (post.user == req.user.id){
+            //delete the associated likes for the post and all its comments' likes too
+            await Like.deleteMany({likeable: post, onModel: 'Post'});
+            await Like.deleteMany({_id: {$in: post.comments}});  //$in operator is used to match all the comments associated with the post.
+
             post.deleteOne();  //delete the post
 
             //delete all the comments associated with the post

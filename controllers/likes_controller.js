@@ -19,7 +19,7 @@ module.exports.toggleLike = async function(req, res){
         if(req.query.type == 'Post'){
             likeable = await Post.findById(req.query.id).populate('likes');
         }else{
-            likeable = await Post.findById(req.query.id).populate('likes');
+            likeable = await Comment.findById(req.query.id).populate('likes');
         }
 
         //check if like already exists
@@ -58,7 +58,7 @@ module.exports.toggleLike = async function(req, res){
                 deleted: deleted   //return the status of the like whether it is deleted or not to the user
             }
         });
-    }catch{
+    }catch(err){
         console.log(`Error in toggling like: ${err}`);
         return res.status(500).json({
             message: 'Internal Server Error'

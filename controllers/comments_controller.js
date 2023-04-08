@@ -4,6 +4,8 @@
 const Comment = require('../models/comment');
 //require the post model
 const Post = require('../models/post');
+//require the Like model
+const Like = require('../models/like');
 //require the comments_mailer module
 const commentsMailer = require('../mailers/comments_mailer');
 //require the queue module
@@ -145,6 +147,9 @@ module.exports.destroy = async function(req, res){
 
             //find the post in which comment is to be deleted and pull the comment Id from the comments array of post schema
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+
+            //destroy the associated likes for this comment
+            await Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
 
             //if the request is an AJAX request
             if(req.xhr){

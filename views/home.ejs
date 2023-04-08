@@ -33,3 +33,11 @@
 
 <script type="text/javascript" src="/js/home_posts_comments.js"></script>
 <script type="text/javascript" src="/js/home_posts.js"></script>
+<script type="text/javascript" src="js/toggle_likes.js"></script>
+<!-- js code to run over and toggle-like for the already present posts and comments on the page -->
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>
