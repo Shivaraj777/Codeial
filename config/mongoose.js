@@ -2,7 +2,7 @@
 
 //require the mongoose module
 const mongoose = require('mongoose');
-//connect to mongodb database with the help of mongoose
+//connect to mongodb database with the help of mongoose || also create a database named codeial_development
 mongoose.connect('mongodb://127.0.0.1/codeial_development');
 
 //establish the connection to the database
