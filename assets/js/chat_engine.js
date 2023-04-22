@@ -17,8 +17,21 @@ class ChatEngine{
 
     //handle the interaction between the user and server(detects if the connection has been completed)
     connectionHandler(){
+        let self = this;
+
         this.socket.on('connect', function(){
             console.log('Connection established using sockets...');
+        });
+
+        //sending an event from client to server to join a chat room
+        self.socket.emit('join_room', {
+            user_email: self.userEmail,
+            chatroom: 'Codeial Room'
+        });
+
+        //detect the event user_joined
+        self.socket.on('User_joined', function(data){
+            console.log('A User has joined', data);
         });
     }
 }

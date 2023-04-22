@@ -12,11 +12,23 @@ module.exports.chatSockets = function(socketServer){
         }
     });
 
-    io.on('connection', function(socket){
+    io.sockets.on('connection', function(socket){
         console.log('New connection received', socket.id);
 
+        //disconnect from socket.io connection
         socket.on('disconnect', function(){
             console.log('Socket disconnected');
+        });
+
+        //detect the join_room event
+        socket.on('join_room', function(data){
+            console.log('Joining request received', data);
+
+            //add the user to the chatroom if it exists, else it will create a chatrrom and add the user to it
+            socket.join(data.chatroom);
+
+            //to emit event in a specific chatroom(send a notification to everyone that user has joined the chat room)
+            io.in(data.chatroom).emit('User_joined', data);
         });
     });
 }
