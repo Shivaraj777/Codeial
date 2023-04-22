@@ -29,6 +29,15 @@ const flash = require('connect-flash'); //used for displaying the flash messages
 //import the custom middleware
 const customMware = require('./config/middleware');
 
+// {set up the chat server to be used with socket.io}
+//import the chat server module and pass the express app to it
+const chatServer = require('http').Server(app);  //this is used to create a server for the chat
+//import the chat sockets module and pass the chat server to it
+const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);   //this is used to set up the chat server configuration
+//set the port for the chat server
+chatServer.listen(3000);
+console.log('Chat Server is listening on port 3000');
+
 //middleware to conver scss to css
 app.use(sassMiddleware({
     src: './assets/scss',       //path where scss files are present
