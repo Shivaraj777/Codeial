@@ -33,5 +33,43 @@ class ChatEngine{
         self.socket.on('User_joined', function(data){
             console.log('A User has joined', data);
         });
+
+        //send a message after clicking on send message button of chat box
+        $('#send-message').click(function(){
+            //get message from chat box
+            let msg = $('#chat-message-input').val();
+
+            if(msg != ''){
+                self.socket.emit('send_message', {
+                    message: msg,
+                    user_email: self.userEmail,
+                    chatroom: 'Codeial Room'
+                });
+            }
+        });
+
+        //detect the receive_message event at client side
+        self.socket.on('receive_message', function(data){
+            console.log('Message received', data.message);
+
+            let newMessage = $('<li>');
+
+            let messageClass = 'other-message';
+            if(data.user_email == self.userEmail){
+                messageClass = 'self-message';
+            }
+
+            newMessage.append($('<span>', {
+                'html': data.message
+            }));
+
+            newMessage.append($('<sub>', {
+                'html': data.user_email
+            }));
+
+            newMessage.addClass(messageClass);
+
+            $('#chat-messages-list').append(newMessage);
+        });
     }
 }
