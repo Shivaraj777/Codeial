@@ -2,8 +2,11 @@
 
 //require the mongoose module
 const mongoose = require('mongoose');
+//require the environment module
+const env = require('./environment');
+
 //connect to mongodb database with the help of mongoose || also create a database named codeial_development
-mongoose.connect('mongodb://127.0.0.1/codeial_development');
+mongoose.connect(`mongodb://127.0.0.1/${env.db}`);
 
 //establish the connection to the database
 const db = mongoose.connection;

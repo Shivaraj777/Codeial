@@ -28,6 +28,10 @@ const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash'); //used for displaying the flash messages
 //import the custom middleware
 const customMware = require('./config/middleware');
+//import the environtment module from configs
+const env = require('./config/environment');
+//import the path module
+const path = require('path');
 
 // {set up the chat server to be used with socket.io}
 //import the chat server module and pass the express app to it
@@ -40,8 +44,8 @@ console.log('Chat Server is listening on port 3000');
 
 //middleware to conver scss to css
 app.use(sassMiddleware({
-    src: './assets/scss',       //path where scss files are present
-    dest: './assets/css',       //path where css files are to be stored after conversion
+    src: path.join(__dirname, env.assets_path, 'scss'),       //path where scss files are present
+    dest: path.join(__dirname, env.assets_path, 'css'),       //path where css files are to be stored after conversion
     debug: true,                //if true, it will print the logs in the console
     outputStyle: 'extended',  //output style of the css file
     prefix: '/css'            //prefix for the css files()
@@ -60,7 +64,7 @@ app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
 //middleware to access the static files in assets folder
-app.use(express.static('./assets'));
+app.use(express.static(env.assets_path));
 //make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
@@ -73,7 +77,7 @@ app.set('views', './views');
 app.use(session({
     name: 'codeial', //name of the session cookie
     //TODO change the secret before deployment in production mode
-    secret: 'blahsomething', //secret key used to encrypt the session cookie
+    secret: env.session_cookie_key, //secret key used to encrypt the session cookie
     saveUninitialized: false,  // if the user is not logged in, do not save the session cookie
     resave: false,   //if the session is not modified, do not save it
     cookie: {
