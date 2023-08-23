@@ -30,6 +30,8 @@ const flash = require('connect-flash'); //used for displaying the flash messages
 const customMware = require('./config/middleware');
 //import the environtment module from configs
 const env = require('./config/environment');
+// import morgan varibale for logging
+const logger = require('morgan');
 //import the path module
 const path = require('path');
 
@@ -43,13 +45,15 @@ chatServer.listen(3000);
 console.log('Chat Server is listening on port 3000');
 
 //middleware to conver scss to css
-app.use(sassMiddleware({
-    src: path.join(__dirname, env.assets_path, 'scss'),       //path where scss files are present
-    dest: path.join(__dirname, env.assets_path, 'css'),       //path where css files are to be stored after conversion
-    debug: true,                //if true, it will print the logs in the console
-    outputStyle: 'extended',  //output style of the css file
-    prefix: '/css'            //prefix for the css files()
-}));
+if(env.name === 'development'){
+    app.use(sassMiddleware({
+        src: path.join(__dirname, env.assets_path, 'scss'),       //path where scss files are present
+        dest: path.join(__dirname, env.assets_path, 'css'),       //path where css files are to be stored after conversion
+        debug: true,                //if true, it will print the logs in the console
+        outputStyle: 'extended',  //output style of the css file
+        prefix: '/css'            //prefix for the css files()
+    }));
+}
 
 //middleware to parse the form data
 app.use(express.urlencoded({extended: true})); //this is used to read the form data
@@ -67,6 +71,9 @@ app.set('layout extractScripts', true);
 app.use(express.static(env.assets_path));
 //make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
+
+//use morgan logger for logging logs
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 //set up the view engine to ejs
 app.set('view engine', 'ejs');

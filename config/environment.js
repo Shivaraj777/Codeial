@@ -1,5 +1,19 @@
 //Description: this file contains the configuration setup for environment in which app runs
 
+const fs = require('fs'); //import the file system module for reading and writing into a file
+const rfs = require('rotating-file-stream'); //import rotating file system module for handling log file limit
+const path = require('path'); //import path module
+
+// set the directory for logs
+const logDirectory = path.join(__dirname, '../production_logs');
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory); //if log directory does not exists then create it
+
+// handle log rotation by creating new log files every day in the specified directory (access.log -> log file name)
+const accessLogStream = rfs.createStream('access.log', {
+    interval: '1d',      //interval to create a new log file
+    path: logDirectory  //path where logs will be stored
+});
+
 //setup development environment
 const development = {
     name: 'development',
@@ -19,7 +33,11 @@ const development = {
     google_client_ID: process.env.CODEIAL_GOOGLE_CLIENT_ID,
     google_client_secret: process.env.CODEIAL_GOOGLE_CLIENT_SECRET,
     google_callback_URL: process.env.CODEIAL_GOOGLE_CALLBACK_URL,
-    jwt_secret_key: 'codeial'
+    jwt_secret_key: 'codeial',
+    morgan: {  //logger configuration to use accessLogStream(rfs)
+        mode: 'dev',
+        options: {stream: accessLogStream}
+    }
 }
 
 // setup the production environment
@@ -41,7 +59,11 @@ const production = {
     google_client_ID: process.env.CODEIAL_GOOGLE_CLIENT_ID,
     google_client_secret: process.env.CODEIAL_GOOGLE_CLIENT_SECRET,
     google_callback_URL: process.env.CODEIAL_GOOGLE_CALLBACK_URL,
-    jwt_secret_key: process.env.CODEIAL_JWT_SECRET_KEY
+    jwt_secret_key: process.env.CODEIAL_JWT_SECRET_KEY,
+    morgan: {
+        mode: 'combined',
+        options: {stream: accessLogStream}
+    }
 }
 
 module.exports = eval(process.env.CODEIAL_ENVIRONMENT) == undefined ? development : eval(process.env.CODEIAL_ENVIRONMENT);
