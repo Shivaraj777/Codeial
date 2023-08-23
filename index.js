@@ -1,6 +1,7 @@
 //importing express module
 const express = require('express');
 const app = express();
+require('./config/view_helpers')(app); //require the view_helper module from config to set the path of static files
 const port = 8000;
 //importing the mongoose module
 const db = require('./config/mongoose');

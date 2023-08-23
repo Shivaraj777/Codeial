@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/css/home.css">
-<link rel="stylesheet" href="/css/chat_box.css">
+<link rel="stylesheet" href="<%= assetPath('css/home.css') %>">
+<link rel="stylesheet" href="<%= assetPath('css/chat_box.css') %>">
 <!-- Home page content -->
 <h1> <%= title %> </h1>
 <div id="home-container">
@@ -36,9 +36,9 @@
 
 </div>
 
-<script type="text/javascript" src="/js/home_posts_comments.js"></script>
-<script type="text/javascript" src="/js/home_posts.js"></script>
-<script type="text/javascript" src="js/toggle_likes.js"></script>
+<script type="text/javascript" src="<%= assetPath('js/home_posts_comments.js') %>"></script>
+<script type="text/javascript" src="<%= assetPath('js/home_posts.js') %>"></script>
+<script type="text/javascript" src="<%= assetPath('js/toggle_likes.js') %>"></script>
 <!-- js code to run over and toggle-like for the already present posts and comments on the page -->
 <script>
     $('.toggle-like-button').each(function(){
@@ -48,7 +48,7 @@
 </script>
 <!-- script to setup socket.io library at front-end -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js" integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script type="text/javascript" src="/js/chat_engine.js"></script>
+<script type="text/javascript" src="<%= assetPath('js/chat_engine.js') %>"></script>
 <!-- if user exists then run the Chat Box -->
 <% if(locals.user){ %>
     <script>
